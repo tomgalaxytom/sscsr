@@ -1,0 +1,13 @@
+Excel file column and table column are matched
+--------------------------------Start------------------------------------------------
+Date/Time: 06-02-2023 12:15:26 
+Some trouble with the icon (G:\xampp\htdocs\rd\sscsr\dataentry\images\logo\logo.ico): (2, 'LoadImage', 'The system cannot find the file specified.')
+--------------------------------------------------------------------------------------
+--------------------------------Result------------------------------------------------
+No of Records Processed       : 100
+Records imported successfuly  : 100
+Records not-imported (Errors) : 0
+Start Time                    : 06-02-2023 12:15:26
+End Time                      : 06-02-2023 12:15:27
+Time Taken                    : 0:00:00.270858
+--------------------------------End--------------------------------------------------
