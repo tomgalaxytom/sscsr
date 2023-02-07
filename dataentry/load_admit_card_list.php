@@ -92,7 +92,7 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 				
 				$output .='<td>
 				<form method="post">
-					<button type="button" name="update" id=' .	$row->tier_master_id . ' class="btn btn-primary btn-xs publish-admitcard"><i class="fa fa-id-card-o" aria-hidden="true"></i></button>
+					<button type="button" name="update" id=' .	$row->tier_master_id . ' class="btn btn-primary btn-xs publish-admitcard"><i class="fa fa-eye" aria-hidden="true"></i></button>
 				</form>
 				<input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
 				</td>

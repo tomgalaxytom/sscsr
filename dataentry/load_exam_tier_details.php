@@ -8,7 +8,7 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 
 	$output = "";
 
-	$query =  "select  em.exam_name, dbm.table_exam_year, dbm.table_type, dbm.table_name,dbm.table_exam_short_name,dtm.tier_id as tier_id,dtm.updated_on as updated_on,tm.tier_name as tier_name,dtm.id as tier_master_id,dtm.status as dtmstatus  from exam_master em 
+	$query =  "select  em.exam_name, dtm.no_of_days,dbm.table_exam_year, dbm.table_type, dbm.table_name,dbm.table_exam_short_name,dtm.tier_id as tier_id,dtm.updated_on as updated_on,tm.tier_name as tier_name,dtm.id as tier_master_id,dtm.status as dtmstatus  from exam_master em 
 	join sscsr_db_table_master dbm on em.exam_short_name = dbm.table_exam_short_name
 	join sscsr_db_table_tier_master dtm on dbm.table_name = dtm.table_name
 	join tier_master tm on cast(dtm.tier_id as char(255)) =  cast(tm.tier_id as char(255)) order by dbm.table_exam_year desc,dtm.tier_id asc ";
@@ -33,7 +33,8 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 							  <th>Exam Name</th> 
 							  <th>Exam Type</th> 
 							  <th width=10%>Rows</th>  
-							  <th>Action</th>							  
+							  <th width=10%>No of Days</th> 
+							  <th width=10%>Action</th>							  
 							</tr>
 						</thead>
 						<tfoot>
@@ -41,8 +42,9 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 							 <th width='20px'>Sno</th>						  
 							  <th>Exam Name</th>                    
 							  <th>Exam Type</th> 
-							  <th width=10%>Rows</th>	
-							  <th>Action</th>							  
+							  <th width=10%>Rows</th>
+							  <th width=10%>No of Days</th> 	
+							  <th width=10%>Action</th>							  
 							 
 							</tr>
 						</tfoot>
@@ -77,7 +79,8 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 			<td width="20px">' . $i . '</td>
 			<td id ="exam_name_id">' .	$examname . '</td>
 			<td>' .	$table_for . '</td>
-			<td style="text-align:right">' . $table_tot_row_count  . '</td>';
+			<td style="text-align:right">' . $table_tot_row_count  . '</td>
+			<td style="text-align:right">' .	$row->no_of_days . '</td>';
 			if($row->dtmstatus == '0'){
 				$text  = $row->updated_on == null ? '' : '<span style="color:red;font-size:13px">Unpublished Time: </span>';
 				$time = $row->updated_on == null ? '' :'<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';

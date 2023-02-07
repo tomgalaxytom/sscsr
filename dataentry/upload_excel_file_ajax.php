@@ -7,6 +7,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH
 
 	$table_type = substr($_POST['selectedTableFormat'], 3);
 
+	$no_of_days = $_POST['no_of_days'];
+
 	$table_name = $_POST['examname'] . '_' . $_POST['exam_year'] . '_' . $table_type;
 
 	$table_name = strtolower($table_name);
@@ -50,25 +52,16 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH
 				$j++;
 			}
 		}
-
-
 		$table_value = rtrim($table_value, ',');
-
-
-
 		if (!empty($_FILES["excel_file_attachment"])) {
-
-
-
-			$tmp_name = $_FILES['excel_file_attachment']['tmp_name'];
-
-			$error = $_FILES['excel_file_attachment']['error'];
-			$size = $_FILES['excel_file_attachment']['size'];
-			$type = $_FILES['excel_file_attachment']['type'];
-			$target_dir = 'uploaded_excel_files/';
-			$file_name = $_FILES["excel_file_attachment"]["name"];
+			$tmp_name 		= $_FILES['excel_file_attachment']['tmp_name'];
+			$error 			 = $_FILES['excel_file_attachment']['error'];
+			$size 			 = $_FILES['excel_file_attachment']['size'];
+			$type 			 = $_FILES['excel_file_attachment']['type'];
+			$target_dir 	 = 'uploaded_excel_files/';
+			$file_name 		 = $_FILES["excel_file_attachment"]["name"];
 			$removeExtension = substr($file_name, 0, strrpos($file_name, '.'));
-			$final_file =  $target_dir . basename($_FILES["excel_file_attachment"]["name"]);
+			$final_file 	 =  $target_dir . basename($_FILES["excel_file_attachment"]["name"]);
 
 
 			############ Tier ID Checking Based Exam ###########
@@ -76,25 +69,32 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH
 
 			if (isset($tier_id) && ($tier_id != 0)) {
 				try {
-					$exam_year = $_POST['exam_year'];
-					$id = $table_name . '_' . $tier_id;
-					$stmt = $pdo->prepare("insert into sscsr_db_table_tier_master (id,table_name, tier_id, table_exam_year, status) values (?,?,?,?,?)");
+					$exam_year 	= $_POST['exam_year'];
+					$id 	   	= $table_name . '_' . $tier_id;
+					$str 	   	= $id;
+					$array 	   	= explode("_",$str);
+					$exam_code 	= $array[0].$array[1];
+					$daycount	= $no_of_days;
+					
 
-					$stmt->execute([$id, $table_name, $tier_id, $exam_year, '0']);
+
+					$stmt = $pdo->prepare("insert into sscsr_db_table_tier_master (id,table_name, tier_id, table_exam_year, status,exam_code,no_of_days) values (?,?,?,?,?,?,?)");
+
+					$stmt->execute([$id, $table_name, $tier_id, $exam_year, '0',$exam_code,$daycount]);
 				} catch (exception $e) {
 					//echo "ex: ".$e; 
 				}
 			}
 
-			$tier_id = $_POST["selectedtier"];
+			$tier_id 					= $_POST["selectedtier"];
 			$excel_file_attachment_name = $_FILES["excel_file_attachment"]["name"];
-			$exam_code = $_POST['examname'] . $_POST['exam_year'];
-			$exam_code = trim(strtolower($exam_code));
+			$exam_code 					= $_POST['examname'] . $_POST['exam_year'];
+			$exam_code 					= trim(strtolower($exam_code));
 
 			if (move_uploaded_file($tmp_name, $final_file)) {
-				$dt = date('Y-m-d h:i:s');
+					$dt 						 = date('Y-m-d h:i:s');
 
-				$dataEntryDirectory = dirname(__FILE__);
+				$dataEntryDirectory 			 = dirname(__FILE__);
 
 
 				$excel_file_attachment_name_path = $dataEntryDirectory . "/uploaded_excel_files/" . $excel_file_attachment_name;

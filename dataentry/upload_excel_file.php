@@ -63,6 +63,16 @@ include('header.php'); ?>
 									</select>	
 								</div> 
 							</div>
+
+							<div class="form-group selectedtier">	
+								<label for="selectedtier" class="col-sm-2 control-label">No of Days<font style="color:red";>*</font> </label> 
+								<div class="col-sm-6">
+								<input type="text"   name="no_of_days" id="no_of_days"    type = "number"  class="form-control" value="" />	
+								</div> 
+							</div>
+
+
+
 							<div class="form-group tier1_status">	
 							</div>
 							<div class="form-group excel_file_attachment">	
@@ -543,10 +553,11 @@ var current_yearabove5 = d.getFullYear() + 5;	// Day		[dd]	(1 - 31)
 	  $('#upload_exam_details').on('submit', function(event){  
            event.preventDefault();  
 		   
-		   var examname = $('#examname option:selected').val();//cgl
-		   var exam_year = $('#exam_year').val();//2021
+		   var examname 	= $('#examname option:selected').val();//cgl
+		   var exam_year 	= $('#exam_year').val();//2021
 		   var table_format = $('#selectedTableFormat option:selected').val();//kyas
 		   var selectedtier = $('#selectedtier option:selected').val();// tier (1)
+		   var no_of_days   = $('#no_of_days').val();// tier (1)
 		   
 		   
 		   if( examname!='' && selectedtier !='' && exam_year !='' && table_format !=''){

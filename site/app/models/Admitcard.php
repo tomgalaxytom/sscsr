@@ -189,28 +189,7 @@ class Admitcard extends DB
             );
 
         }
-
-
-
-
         if ($instructions_count->count == 0) {
-
-
-            
-         
-
-
-
-
-
-
-
-
-
-
-
-
-
             $sql  = $this->select("kd.*,ted.*,t.tier_name, t.tier_id")
                 ->from("$kyas_tbl_name kd ")
                 ->join("$table_name ted ", "kd.reg_no = ted.reg_no and trim(kd.exam_code) = trim(ted.exam_code) ", "JOIN")
@@ -324,11 +303,6 @@ class Admitcard extends DB
     public function getAdmitcardforTier($data_array)
     {
 
-      
-
-        
-
-
         $originalDate = $data_array['dob'];
         $newDate = $this->getDobFormat($originalDate);
         $table_name = $data_array['table_name'];
@@ -366,19 +340,7 @@ class Admitcard extends DB
         $tier_id = $this->cleanData($tier_id);
 
         $instructions_count = $instructions_sql;
-
-
-
         if ($instructions_count->count == 0) {
-
-
-           
-           
-
-         
-
-           
-
             if($data_array['roll_no'] != "" && $data_array['post_preference'] ==""){
 
                 $whereArray = array(
@@ -422,9 +384,7 @@ class Admitcard extends DB
                 ->join("tier_master t", "ted.tier_id = cast(t.tier_id as char(255))", "JOIN")
                 ->where($whereArray)
                 ->get_one();
-               // echo $this->last_query;
-              //  $this->execute($sql );
-               // exit;
+              
         } else {
 
             $sql  = $this->select("kd.*,ted.*,t.tier_name, t.tier_id, ted.*,t.tier_name, t.tier_id , ii.pdf_attachment,
