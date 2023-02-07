@@ -135,7 +135,7 @@ class PdfHelperDVExam extends Dompdf
             }
             else{
               $base_url =  "http://" . $_SERVER['SERVER_NAME'];
-              $local_path =  $base_url ."/rd/security_audit/site/";
+              $local_path =  $base_url ."/projects/sscsr/site/";
               $sign_path =  $local_path."exam_assets/sign_not_exits.png";
               
                

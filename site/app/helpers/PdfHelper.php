@@ -168,8 +168,8 @@ class PdfHelper extends Dompdf
                               $photo_path = $photo_path;
                            }
                            else{
-                                    $base_url =  "http://" . $_SERVER['SERVER_NAME'];
-                                    $local_path =  $base_url ."/rd/security_audit/site/";
+                              $base_url =  "http://" . $_SERVER['SERVER_NAME'];
+                              $local_path =  $base_url ."/projects/sscsr/site/";
                               $photo_path =  $local_path."exam_assets/photo_not_exists.png";
                                     
                               }
