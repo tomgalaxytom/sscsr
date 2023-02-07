@@ -105,3 +105,7 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.sscsr_db_table_tier_master
     OWNER to postgres;
 
+# No of Days Query
+
+select distinct(date1::date)- INTEGER '3' AS yesterday_date from  cgle_2019_tier
+

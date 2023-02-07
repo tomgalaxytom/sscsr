@@ -285,6 +285,9 @@ else{
 
 
 		});
+		
+		
+		//Publish Button
 	 
 	 $('#exam_data').on('click', '.publish-button', function(event) {
 		 
@@ -358,6 +361,7 @@ else{
 	  
 	  
   });
+  //Publish Button
 
 	});
 </script>
