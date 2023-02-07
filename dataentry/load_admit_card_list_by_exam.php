@@ -37,7 +37,8 @@ where ted.ac_printed = '1' and ted.tier_id = '$tier_id' ";
 							  <th width=35%>Candidate Name</th> 
 							  <th width=20%>Dob</th> 
 							  <th width=10%>Reg No </th>  
-							  <th width=20%>Roll No </th>  
+							  <th width=20%>Roll No </th> 
+							  <th width=20%>IP Address </th> 
 							</tr>
 						</thead>
 					<tbody>";
@@ -51,6 +52,7 @@ where ted.ac_printed = '1' and ted.tier_id = '$tier_id' ";
 			<td>' .	$row->dob . '</td>
 			<td>' . $row->reg_no  . '</td>
 			<td>' . $row->roll_no  . '</td>
+			<td>' . $row->ipaddress  . '</td>
 			</tr>';
 			$i++;
 	}
@@ -61,6 +63,7 @@ where ted.ac_printed = '1' and ted.tier_id = '$tier_id' ";
 	  <th>Dob</th> 
 	  <th>Reg No</th>	
 	  <th>Roll No </th>  
+	  <th>IP Address</th>  
 	</tr>
 </tfoot></table>";
 	echo $output;

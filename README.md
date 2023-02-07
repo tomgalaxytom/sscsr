@@ -1,6 +1,13 @@
 # sscsr
 Staff Selection Commission Projects 
 
+$base_url = "10.163.2.160/projects/sscsr/site/"
+
+cgle 2019  sample reg and dob:
+
+10000863847
+31-12-1991
+
 # Data Entry Folder Changes
 
 # functions.php
