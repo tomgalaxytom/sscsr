@@ -1,4 +1,5 @@
 <?php
+$name = "stalin";
 #query Execute
  echo $this->last_query;
  exit;
