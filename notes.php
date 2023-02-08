@@ -1,5 +1,5 @@
 <?php
-$name = "stalin";
+$name = "stalin thomas";
 #query Execute
  echo $this->last_query;
  exit;
