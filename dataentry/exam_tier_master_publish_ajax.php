@@ -4,7 +4,7 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 {
 require_once ("functions.php");
 $id = $_POST['exam_tier_master_id'];
-$iconid_id = $_POST['iconid'];
+$count_of_days = $_POST['count_of_days'];
 // Update user
 
     try
@@ -12,12 +12,7 @@ $iconid_id = $_POST['iconid'];
 
         date_default_timezone_set("Asia/Calcutta"); 
         $updated_time = $date = date("Y-m-d H:i:s");
-		if($iconid_id=="red"){
-			   $sql = "UPDATE public.sscsr_db_table_tier_master SET  status='1',updated_on = '$updated_time' WHERE id='$id'";
-		}
-		else{
-			  $sql = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$id'";
-		}
+		$sql = "UPDATE public.sscsr_db_table_tier_master SET  no_of_days='$count_of_days',updated_on = '$updated_time' WHERE id='$id'";
        
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
@@ -25,7 +20,7 @@ $iconid_id = $_POST['iconid'];
             'response' => array(
                 'status' => 'success',
                 'code' => '1', // whatever you want
-                'message' => 'Exam Tier Master  Updated Successfully.',
+                'message' => 'Count of Days  Updated Successfully.',
                 'title' => "success"
             )
         );
