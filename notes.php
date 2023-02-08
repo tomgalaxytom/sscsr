@@ -39,3 +39,5 @@ WHERE kd.dob = '25-06-1993' AND kd.reg_no = '10000863847' AND ted.tier_id = '1' 
 
 
 SELECT date1::date - INTEGER '3' AS yesterday_date FROM cgle_2019_tier where tier_id = '1' order by id asc limit 1
+
+test
