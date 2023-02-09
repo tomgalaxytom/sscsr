@@ -156,7 +156,11 @@ class PdfHelper extends Dompdf
                $value14 = $value["col_description"]." : ".$value["col_value"] != "" && $value["col_value"] != 'NA'  ?  $value["col_value"] : "photo_not_exists.png";
                   
                            $full_photo_path = photoPath($data);
+
+
                            $photo_path = $full_photo_path.$value14;
+                           //echo $photo_path;
+                          // exit;
                            $ch = curl_init($photo_path);
                            curl_setopt($ch, CURLOPT_NOBODY, true);
                            curl_exec($ch);

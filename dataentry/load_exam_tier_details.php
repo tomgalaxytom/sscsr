@@ -93,34 +93,19 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 			<td style="text-align:right" class="publish-button">' .	$row->no_of_days .'&nbsp;&nbsp;<i class="fa fa-pencil "  id ="red" style="color:grey"></i> <input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '></td>
 			<td style="text-align:right" class="exam_date_class">' .	$current_exam_date .'</td>';
 			 $enable_date = date('Y-m-d', strtotime($admitcard_enable_date))."<br>";
-			 
-			
 			   $current_date = date('Y-m-d');
-			   //$current_date = "2023-02-10";
+			  // $current_date = "2023-02-09";
 			   $exam_date    =  date('Y-m-d', strtotime($current_exam_date));
 			   $enable_date = date('Y-m-d', strtotime($admitcard_enable_date));
-
-				// echo "Current Date: " .$current_date."<br>";
-				// echo "Exam Date: " . $exam_date."<br>";
-				// echo "Previus Date: " .$enable_date."<br>";
-
-
-
-
-
-
 			date_default_timezone_set("Asia/Calcutta"); 
 			$updated_time = $date = date("Y-m-d H:i:s");
-
-
-
 		
-			 if( $current_date == $enable_date ){
+			 if( $current_date >= $enable_date &&  $current_date <= $exam_date ){
 				$sql = "UPDATE public.sscsr_db_table_tier_master SET  status='1',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
-				$text  = $row->updated_on == null ? '' : '<span style="color:green;font-size:13px">Published Time: </span>';
-				$time = $row->updated_on == null ? '' :'<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
+				$text  =  '<span style="color:green;font-size:13px">Published Time: </span>';
+				$time  = '<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
 				$output .='<td>
 				<form method="post">
 					<i class="fa fa-flag c" id ="green" style="color:green"></i>  
@@ -131,27 +116,27 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 				</td></tr>';
 
 			 }
-			 else if($current_date > $exam_date ){
-				$sql = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
-				$stmt = $pdo->prepare($sql);
-				$stmt->execute();
-				$text  = $row->updated_on == null ? '' : '<span style="color:red;font-size:13px">Unpublished Time: </span>';
-				$time = $row->updated_on == null ? '' :'<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
-				$output .='<td>
-				<form method="post">
-					<i class="fa fa-flag "  id ="red" style="color:red"></i>  
-					<span>'.$text.	$time  . '</span>
-				</form>
-				<input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
+			//  else if($current_date > $exam_date ){
+			// 	$sql = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
+			// 	$stmt = $pdo->prepare($sql);
+			// 	$stmt->execute();
+			// 	$text  = $row->updated_on == null ? '' : '<span style="color:red;font-size:13px">Unpublished Time: </span>';
+			// 	$time = $row->updated_on == null ? '' :'<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
+			// 	$output .='<td>
+			// 	<form method="post">
+			// 		<i class="fa fa-flag "  id ="red" style="color:red"></i>  
+			// 		<span>'.$text.	$time  . '</span>
+			// 	</form>
+			// 	<input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
 				
-				</td></tr>';
-			 }
-			 else{
-				$sql = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
-				$stmt = $pdo->prepare($sql);
+			// 	</td></tr>';
+			//  }
+			 else {
+				$sql   = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
+				$stmt  = $pdo->prepare($sql);
 				$stmt->execute();
-				$text  = $row->updated_on == null ? '' : '<span style="color:red;font-size:13px">Unpublished Time: </span>';
-				$time = $row->updated_on == null ? '' :'<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
+				$text  =  '<span style="color:red;font-size:13px">Unpublished Time: </span>';
+				$time  = '<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
 				$output .='<td>
 				<form method="post">
 					<i class="fa fa-flag "  id ="red" style="color:red"></i>  
