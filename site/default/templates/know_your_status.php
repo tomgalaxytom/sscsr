@@ -58,14 +58,47 @@ $base_url =  "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 								</select>
 							  <br>
 							  <br> -->
-							   <label for="exampleInputEmail1">Online Registration Number </label>
-							  <input type="text" style='margin-top:10px' class="form-control" placeholder=" Registration Number" name="register_number"   autocomplete="off" />
+
+							  <div class="form-group row">
+									<div class="col-xs-4">
+										<label for="ex3">Registration Number </label>
+										<input class="form-control placeholder_font_size" name="register_number" id="username" maxlength="11" value="" type="text" placeholder="Registration Number" onkeypress="return isNumber(event)" required>
+									</div>
+							 </div>
+							  
+							    <!-- <label for="exampleInputEmail1">Register Number</label>
+							  <input type="text" class="form-control" placeholder="Application Number" name="register_number" id = "username" required="" autocomplete="off" />
+							  <br> -->
+							  <!-- <label for="exampleInputEmail1">Date of Birth</label> -->
+							  <!-- <input type="date" class="form-control" placeholder="DOB " name="dob" required="" id = "password" autocomplete="off"/>   -->
+							  <div class="form-group row">
+									<div class="col-xs-4">
+										<label for="dob">Date of Birth</label>
+										<input class="form-control placeholder_font_size" name="dob" id="dob" value="" readonly type="text" required>
+									</div>
+							 </div>
+
+
+
+
+
+
+
+							   <!-- <label for="exampleInputEmail1">Online Registration Number </label>
+							  <input type="text" style='margin-top:10px' class="form-control" placeholder=" Registration Number" name="register_number"   autocomplete="off" /> -->
 							  
 							 
-							   <label for="exampleInputEmail1">Date of Birth</label>
-							  <input type="date" class="form-control" placeholder="Candidate's Date of Birth  " name="dob" required="" id = "password" autocomplete="off"/>  
+							   <!-- <label for="exampleInputEmail1">Date of Birth</label>
+							  <input type="date" class="form-control" placeholder="Candidate's Date of Birth  " name="dob" required="" id = "password" autocomplete="off"/>   -->
 							 
 							  <br>
+
+
+
+
+
+
+
 							  <button class="btn btn-lg btn-sscsrthemecolor btn-block" type="submit" name="kyas">Know your Application Status</button>   
 							</form>
 						  </div>
@@ -97,6 +130,12 @@ $base_url =  "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 }
 #hidden-panel-app-name {
 	display: none;
+}
+.placeholder_font_size{
+	font-size: 13px;
+}
+.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+    color: black !important;
 }
  </style>
 

@@ -64,9 +64,35 @@
 
 <link href="css/lightgallery.css" rel="stylesheet">
 <script src="js/lightgallery-all.min.js"></script>
+<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <script>
+	function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
 	$(document).ready(function() {
+
+		$.datepicker.setDefaults({
+			showOn: "button",
+			buttonImage: "img/datepicker.png",
+			buttonText: "Date Picker",
+			buttonImageOnly: true,
+			dateFormat: 'dd-mm-yy'
+		});
+		$(function() {
+			$("#dob").datepicker({
+				changeMonth: true,
+				changeYear: true,
+				yearRange: '1980:2000'
+			});
+		});
+
 
 
 		$("[data-toggle='tooltip']").tooltip(); // Initialize Tooltip

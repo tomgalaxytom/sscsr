@@ -153,20 +153,6 @@ $tenderpage = $route->site_url("IndexController/tender");
 									<marquee behavior=scroll direction="up" scrollamount="3" onmouseover="this.stop();" onmouseout="this.start();" style="height:200px">
 										<ul>
 											<?php
-
-
-													//echo '<pre>';
-													//print_r($tenders_latest_news);
-
-
-
-
-
-
-
-
-
-
 											foreach (@$tenders_latest_news as $sn => $tendercreationlist) :
 												$current_date =  date('Y-m-d');
 												$tender_date = date('Y-m-d', strtotime($tendercreationlist->effect_from_date));
@@ -200,7 +186,7 @@ $tenderpage = $route->site_url("IndexController/tender");
 										<!-- <marquee behavior=scroll direction="up" scrollamount="3" onmouseover="this.stop();" onmouseout="this.start();"> -->
 
 										<li style="padding:10px"><a href="IndexController/knowyourstatus" target="_blank" style="color:blue;text-decoration:underline;">Know Your Application Status</a></li>
-										<li style="padding:10px"><a href="IndexController/knowyourvenuedetails" target="_blank" style="color:blue;text-decoration:underline;">Know Your Exam Date & City</a></li>
+										<li style="padding:10px"><a href="IndexController/knowyourvenuedetails" target="_blank" style="color:blue;text-decoration:underline;">Know Your Exam City</a></li>
 										<li style="padding:10px"><a href="IndexController/admitcard" target="_blank" style="color:blue;text-decoration:underline;">Admit Card or Call Letter</a></li>
 
 

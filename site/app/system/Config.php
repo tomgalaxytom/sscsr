@@ -25,3 +25,4 @@ class Config
     return $this->$config_key;
   }
 }
+

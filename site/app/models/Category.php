@@ -54,15 +54,6 @@ class Category extends DB
     {
         return $this->update($data, ['category_id' => $id]);
     }
-	
-	
-	
-	
-	
-	
-	
-	
-	
     public function getCategoryNominations($parent_id = 0)
     {
         $categories = $this->select()
@@ -70,6 +61,7 @@ class Category extends DB
 			->where(['show_in_nomination' => 1,'show_in_selection_post' => 0,'status' => 1])
             ->order_by('nomination_order asc')
             ->get_list();
+           
         return $categories;
     }
 	 public function getCategorySelectionPosts($parent_id = 0)
@@ -79,6 +71,7 @@ class Category extends DB
 			->where(['show_in_nomination' => 0,'show_in_selection_post' => 1,'status' => 1])
             ->order_by('selection_post_order  asc')
             ->get_list();
+           
         return $categories;
     }
 	 public function getCategory()

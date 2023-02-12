@@ -52,7 +52,7 @@ $knowyourvenuedetails = $route->site_url("IndexController/knowyourvenuedetails")
 							<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 									<div class="flipper">
 										<div class="front">
-											<h4 class="ccn">Know<br>your<br>Exam Date <br>& City</h4>
+											<h4 class="ccn">Know<br>your<br>Exam City</h4>
 										</div>
 										<div class="back">
 											<a href="<?php echo $knowyourvenuedetails;?>" class="cbp-l-caption-buttonRight" target="_blank">Go <i class="fa fa-share" aria-hidden="true"></i></a>

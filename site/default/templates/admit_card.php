@@ -63,8 +63,16 @@ $base_url =  "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 
 
-								<label for="exampleInputEmail1">Register Number <span class="qnsround"  data-toggle='tooltip' title='cut,copy,paste is not allowed . Type it Manually'>?</span></label>
-								<input type="text" class="form-control" placeholder="Application Number" name="register_number" id="register_number"  autocomplete="off" />
+								<!-- <label for="exampleInputEmail1">Registration Number <span class="qnsround"  data-toggle='tooltip' title='cut,copy,paste is not allowed . Type it Manually'>?</span></label>
+								<input type="text" class="form-control" placeholder="Registration Number" name="register_number" id="register_number"  autocomplete="off" /> -->
+
+
+								<div class="form-group row">
+									<div class="col-xs-5">
+										<label for="dob" class="placeholder_font_size ">Registration Number<span class="qnsround"  data-toggle='tooltip' title='cut,copy,paste is not allowed . Type it Manually'>?</span></label>
+										<input class="form-control placeholder_font_size" placeholder="Registration Number" name="register_number" maxlength="11" id="register_number" value=""  type="text" onkeypress="return isNumber(event)"  required>
+									</div>
+							 </div>
 								
 								<br>
 								<div class='roll_pp_div' style='display:none'>
@@ -100,8 +108,20 @@ $base_url =  "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 
 
-								<label for="exampleInputEmail1">Date of Birth</label>
-								<input type="date" class="form-control" placeholder="DOB " name="dob" required="" id="password" autocomplete="off" />
+								<!-- <label for="exampleInputEmail1">Date of Birth</label>
+								<input type="date" class="form-control" placeholder="DOB " name="dob" required="" id="password" autocomplete="off" /> -->
+
+
+								<div class="form-group row">
+									<div class="col-xs-4">
+										<label for="dob">Date of Birth</label>
+										<input class="form-control placeholder_font_size" name="dob" id="dob" value="" readonly type="text" required>
+									</div>
+							 </div>
+
+
+
+
 
 								<br>
 								<button class="btn btn-lg btn-sscsrthemecolor btn-block" type="submit" name="admit_card">Download Admit Card</button>
@@ -119,6 +139,12 @@ $base_url =  "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 </section>
 <?php include "footer2.php"; ?>
 <style>
+	.placeholder_font_size{
+	font-size: 13px;
+}
+	.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+    color: black !important;
+}
 	.select2-selection__rendered {
 		line-height: 31px !important;
 		white-space: inherit !important;
