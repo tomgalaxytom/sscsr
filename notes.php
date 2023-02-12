@@ -49,3 +49,15 @@ WHERE kd.dob = '25-06-1993' AND kd.reg_no = '10000863847' AND ted.tier_id = '1' 
 
 
 select * from cgle_2019_kyas where reg_no = '10000863847'
+
+db_changes on 12feb23 at 2 o clock:
+
+go to 
+category_name   selection_post_order  show_in_selection_posts
+Notice2             1                           1
+CBE                 2                           1
+Skill Test          3                           1                # Add this value in this table
+DV                  4                           1
+Nominations         5                           1
+
+SELECT * FROM mstcategory
