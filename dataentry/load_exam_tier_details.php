@@ -8,10 +8,23 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 
 	$output = "";
 
-	$query =  "select  em.exam_name, dtm.no_of_days,dbm.table_exam_year, dbm.table_type, dbm.table_name,dbm.table_exam_short_name,dtm.tier_id as tier_id,dtm.updated_on as updated_on,tm.tier_name as tier_name,dtm.id as tier_master_id,dtm.status as dtmstatus  from exam_master em 
+	$query =  "select  
+					em.exam_name,
+					dtm.no_of_days,
+					dbm.table_exam_year,
+					dbm.table_type, 
+					dbm.table_name,
+					dbm.table_exam_short_name,
+					dtm.tier_id as tier_id,
+					dtm.updated_on as updated_on,
+					dtm.stop_status as stop_status,
+					tm.tier_name as tier_name,
+					dtm.id as tier_master_id,
+					dtm.status as dtmstatus  
+					from exam_master em 
 	join sscsr_db_table_master dbm on em.exam_short_name = dbm.table_exam_short_name
 	join sscsr_db_table_tier_master dtm on dbm.table_name = dtm.table_name
-	join tier_master tm on cast(dtm.tier_id as char(255)) =  cast(tm.tier_id as char(255)) order by dbm.table_exam_year desc,dtm.tier_id asc ";
+	join tier_master tm on cast(dtm.tier_id as char(255)) =  cast(tm.tier_id as char(255))  order by dbm.table_exam_year desc,dtm.tier_id asc ";
 
 	$result =  getAll($query);
 	$resultCount =  getRowCount($query);
@@ -93,24 +106,38 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 			<td style="text-align:right" class="publish-button">' .	$row->no_of_days .'&nbsp;&nbsp;<i class="fa fa-pencil "  id ="red" style="color:grey"></i> <input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '></td>
 			<td style="text-align:right" class="exam_date_class">' .	$current_exam_date .'</td>';
 			 $enable_date = date('Y-m-d', strtotime($admitcard_enable_date))."<br>";
-			   $current_date = date('Y-m-d');
-			  // $current_date = "2023-02-09";
+			  // $current_date = date('Y-m-d');
+			   $current_date = "2023-02-09";
 			   $exam_date    =  date('Y-m-d', strtotime($current_exam_date));
 			   $enable_date = date('Y-m-d', strtotime($admitcard_enable_date));
 			date_default_timezone_set("Asia/Calcutta"); 
 			$updated_time = $date = date("Y-m-d H:i:s");
 		
 			 if( $current_date >= $enable_date &&  $current_date <= $exam_date ){
+				
 				$sql = "UPDATE public.sscsr_db_table_tier_master SET  status='1',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
+
+				//echo $sql;
+				//exit;
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute();
-				$text  =  '<span style="color:green;font-size:13px">Published Time: </span>';
+				//$text  =  '<span style="color:green;font-size:13px">Published Time: </span>';
 				$time  = '<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
+				
 				$output .='<td>
 				<form method="post">
-					<i class="fa fa-flag c" id ="green" style="color:green"></i>  
-					<span>'.$text.	$time  . '</span>
-				</form>
+					<i class="fa fa-flag status-change" id ="green" style="color:green"></i>  
+					<span>'.  $time  . '</span>';
+					if( $row->stop_status == '1'){
+
+						$output .='<button type="button" id="green" class="btn btn-success stop_status_class">Publish</button>';
+
+					}
+					else{
+						$output .='<button type="button" id="red" class="btn btn-danger stop_status_class">Unpublish</button>';
+					}
+					
+					$output .='</form>
 				<input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
 				
 				</td></tr>';
@@ -132,37 +159,31 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 			// 	</td></tr>';
 			//  }
 			 else {
-				$sql   = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
+				
+				$sql   = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'   ";
 				$stmt  = $pdo->prepare($sql);
 				$stmt->execute();
-				$text  =  '<span style="color:red;font-size:13px">Unpublished Time: </span>';
+				//$text  =  '<span style="color:red;font-size:13px">Unpublished Time: </span>';
 				$time  = '<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
 				$output .='<td>
 				<form method="post">
-					<i class="fa fa-flag "  id ="red" style="color:red"></i>  
-					<span>'.$text.	$time  . '</span>
-				</form>
+					<i class="fa fa-flag status-change" id ="green" style="color:green"></i>  
+					<span>'.  $time  . '</span>';
+					if( $row->stop_status == '1'){
+
+						$output .='<button type="button" id="green" class="btn btn-success stop_status_class">Publish</button>';
+
+					}
+					else{
+						$output .='<button type="button" id="red" class="btn btn-danger stop_status_class">Unpublish</button>';
+					}
+					
+					$output .='</form>
 				<input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
 				
 				</td></tr>';
 				
 			 }
-			
-
-// exit;
-
-
-
-			// if($row->dtmstatus == '0'){
-				
-				
-			// }
-			// else{
-				
-				
-			// }
-			
-			
 			$i++;
 		
 			
@@ -343,13 +364,9 @@ else{
 		});
 		
 		
-		//Publish Button
+	//Publish Button
 	 
 	 $('#exam_data').on('click', '.publish-button', function(event) {
-		debugger;
-		 
-		 
-		
 	// $('#tbl').on('click', 'tbody tr a', function() 
 	 
     var exam_tier_master_id =  $(this).closest('td').find('#tier_master_id').val();
@@ -469,6 +486,94 @@ debugger;
 	  
   });
   //Publish Button
+
+		//Start , Stop Button
+		$('#exam_data').on('click', '.stop_status_class', function(event) {
+
+			debugger;
+		 
+		 
+		
+		 // $('#tbl').on('click', 'tbody tr a', function() 
+		  
+		 var exam_tier_master_id =  $(this).closest('td').find('#tier_master_id').val();
+		   //var baseurl = 'exam_tier_master_publish_ajax.php';
+		   //var redirecturl = 'dataentry/exam_tier_master.php';
+		  var iconid             = $(this).closest('td').find('.stop_status_class').attr('id');
+		  
+		  
+		  
+		 var exam_name          = $(this).closest('tr').find('#exam_name_id').text();
+		 var title              = "Stop the Below Exam";
+			
+		   
+		   
+		 swal.fire({
+			 title: '<strong> Want to '+title+'</strong>',
+			 html:exam_name,
+			 showCloseButton: true,
+			 confirmButtonText: 'Yes',
+			 cancelButtonText: 'No',
+			 confirmButtonClass: 'some-class',
+			 cancelButtonClass: 'some-other-class',
+			 showCancelButton: true
+		 }).then(function(result) {
+			 if (result.value) {
+	 
+				 // AJAX request
+				 $.ajax({
+					 url: "exam_tier_master_stop_ajax.php",
+					 method: "POST",
+					 data: {
+						 exam_tier_master_id: exam_tier_master_id,
+						 iconid :iconid
+					 },
+					 dataType: "json",
+				 }).done(function(data) {
+	 
+					 
+	 
+	 
+					 swal.fire({
+						 showCloseButton: true,
+						 title: data.response.title,
+						 text: data.response.message,
+						 icon: data.response.status,
+					 }).then(function() {
+						 location.reload();
+						 var dt = new Date();
+					 var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+	 
+					 $('#update_time').html(time);
+					 });
+				 });
+	 
+			 } else {
+			 console.log('button B pressed')
+			 }
+		 })
+		   
+	 
+		   
+		   
+	   });
+	   
+	   //Start , Stop Button
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	});
 </script>
