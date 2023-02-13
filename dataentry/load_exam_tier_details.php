@@ -48,6 +48,7 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 							  <th width=3%>Rows</th>  
 							  <th width=1%>Count<br>Days</th> 
 							  <th width=5%>Exam<br> Date</th> 
+							  <th width=5%>Status</th>	
 							  <th width=15%>Action</th>							  
 							</tr>
 						</thead>
@@ -59,6 +60,7 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 							  <th width=3%>Rows</th>
 							  <th width=1%>Count<br>Days</th> 
 							  <th width=5%>Exam <br> Date</th>	
+							  <th width=5%>Status</th>	
 							  <th width=15%>Action</th>							  
 							 
 							</tr>
@@ -71,10 +73,13 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 		
 		$table_count =  "select count(*) from $row->table_name    where tier_id='$row->tier_id'";
 		$table_tot_row_count =  getRowCount($table_count);
+
 		$sql = "SELECT date1::date - INTEGER '$row->no_of_days' AS yesterday_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
 		$result =  getAll($sql);
+
 		$sql2 = "SELECT date1::date  AS exam_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
 		$result2 =  getAll($sql2);
+
 		$admitcard_enable_date = $result[0]->yesterday_date;
 		$current_exam_date = $result2[0]->exam_date;
 		$str = $row->no_of_days.'=>'.$admitcard_enable_date.'=>'.$current_exam_date;
@@ -104,86 +109,57 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 			<td>' .	$table_for . '</td>
 			<td style="text-align:right">' . $table_tot_row_count  . '</td>
 			<td style="text-align:right" class="publish-button">' .	$row->no_of_days .'&nbsp;&nbsp;<i class="fa fa-pencil "  id ="red" style="color:grey"></i> <input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '></td>
-			<td style="text-align:right" class="exam_date_class">' .	$current_exam_date .'</td>';
-			 $enable_date = date('Y-m-d', strtotime($admitcard_enable_date))."<br>";
-			  // $current_date = date('Y-m-d');
-			   $current_date = "2023-02-09";
-			   $exam_date    =  date('Y-m-d', strtotime($current_exam_date));
-			   $enable_date = date('Y-m-d', strtotime($admitcard_enable_date));
-			date_default_timezone_set("Asia/Calcutta"); 
-			$updated_time = $date = date("Y-m-d H:i:s");
-		
-			 if( $current_date >= $enable_date &&  $current_date <= $exam_date ){
-				
-				$sql = "UPDATE public.sscsr_db_table_tier_master SET  status='1',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
-
-				//echo $sql;
-				//exit;
-				$stmt = $pdo->prepare($sql);
-				$stmt->execute();
-				//$text  =  '<span style="color:green;font-size:13px">Published Time: </span>';
+			<td style="text-align:right" class="exam_date_class">' .	$current_exam_date .'</td>
+			<td  class="exam_status_class text-center">
+				<i class="fa fa-flag status-change" id ="green" style="font-size:18px;color:' . (($row->dtmstatus==1)? "green":"red") . '"></i>  
+			</td>
+			';
 				$time  = '<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
 				
 				$output .='<td>
-				<form method="post">
-					<i class="fa fa-flag status-change" id ="green" style="color:green"></i>  
-					<span>'.  $time  . '</span>';
+				<form method="post"> 
+					<span>'.  $time  . '</span><br/>';
 					if( $row->stop_status == '1'){
-
-						$output .='<button type="button" id="green" class="btn btn-success stop_status_class">Publish</button>';
-
+						$output .= "<span style='color:red'>Hold</span> &nbsp;";
+						$output .='<button type="button" id="green" class="btn btn-success stop_status_class">Start</button>';
+					} else {
+						$output .= "<span style='color:green'>Active</span> &nbsp;";
+						$output .='<button type="button" id="green" class="btn btn-danger stop_status_class">Stop</button>';
 					}
-					else{
-						$output .='<button type="button" id="red" class="btn btn-danger stop_status_class">Unpublish</button>';
-					}
+					
 					
 					$output .='</form>
 				<input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
 				
 				</td></tr>';
 
-			 }
-			//  else if($current_date > $exam_date ){
-			// 	$sql = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'";
-			// 	$stmt = $pdo->prepare($sql);
-			// 	$stmt->execute();
-			// 	$text  = $row->updated_on == null ? '' : '<span style="color:red;font-size:13px">Unpublished Time: </span>';
-			// 	$time = $row->updated_on == null ? '' :'<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
-			// 	$output .='<td>
-			// 	<form method="post">
-			// 		<i class="fa fa-flag "  id ="red" style="color:red"></i>  
-			// 		<span>'.$text.	$time  . '</span>
-			// 	</form>
-			// 	<input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
+			
+			
 				
-			// 	</td></tr>';
-			//  }
-			 else {
-				
-				$sql   = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'   ";
-				$stmt  = $pdo->prepare($sql);
-				$stmt->execute();
-				//$text  =  '<span style="color:red;font-size:13px">Unpublished Time: </span>';
-				$time  = '<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
-				$output .='<td>
-				<form method="post">
-					<i class="fa fa-flag status-change" id ="green" style="color:green"></i>  
-					<span>'.  $time  . '</span>';
-					if( $row->stop_status == '1'){
+				// $sql   = "UPDATE public.sscsr_db_table_tier_master SET  status='0',updated_on = '$updated_time' WHERE id='$row->tier_master_id'   ";
+				// $stmt  = $pdo->prepare($sql);
+				// $stmt->execute();
+				// //$text  =  '<span style="color:red;font-size:13px">Unpublished Time: </span>';
+				// $time  = '<span style="color:black;font-size:13px">'.date("d-m-Y H:i:s", strtotime($row->updated_on)).'</span>';
+				// $output .='<td>
+				// <form method="post">
+				// 	<i class="fa fa-flag status-change" id ="green" style="color:green"></i>  
+				// 	<span>'.  $time  . '</span>';
+				// 	if( $row->stop_status == '1'){
 
-						$output .='<button type="button" id="green" class="btn btn-success stop_status_class">Publish</button>';
+				// 		$output .='<button type="button" id="green" class="btn btn-success stop_status_class">Publish</button>';
 
-					}
-					else{
-						$output .='<button type="button" id="red" class="btn btn-danger stop_status_class">Unpublish</button>';
-					}
+				// 	}
+				// 	else{
+				// 		$output .='<button type="button" id="red" class="btn btn-danger stop_status_class">Unpublish</button>';
+				// 	}
 					
-					$output .='</form>
-				<input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
+				// 	$output .='</form>
+				// <input class="form-control" type="hidden" name="id" id="tier_master_id" value=' .	$row->tier_master_id . '>
 				
-				</td></tr>';
+				// </td></tr>';
 				
-			 }
+			
 			$i++;
 		
 			
