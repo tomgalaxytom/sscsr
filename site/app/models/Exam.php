@@ -62,12 +62,13 @@ class Exam extends DB
     public function getExamfromExamDetailsTbl($q){
 
         $sql = "SELECT DISTINCT tm.table_name,
-	tm.table_exam_short_name,
-	tm.table_exam_year,
-	em.exam_name
-	FROM public.sscsr_db_table_master tm 
-JOIN exam_master em ON tm.table_exam_short_name = em.exam_short_name  WHERE  tm.table_type='kyas'  and tm.status='1' and tm.table_exam_short_name LIKE '%".$q."%'  order by tm.table_exam_year desc ";
-//echo $sql;
+	            tm.table_exam_short_name,
+	            tm.table_exam_year,
+	            em.exam_name
+	            FROM public.sscsr_db_table_master tm 
+                JOIN exam_master em ON tm.table_exam_short_name = em.exam_short_name  
+                WHERE  tm.table_type='kyas'  and tm.status='1' and tm.table_exam_short_name 
+                LIKE '%".$q."%'  order by tm.table_exam_year desc ";
 
         $lastinsertid = $this->set_query($sql)->get_list();
         $lastinsertid = (object)$lastinsertid;

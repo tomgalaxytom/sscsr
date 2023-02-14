@@ -118,13 +118,13 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 				
 				$output .='<td>
 				<form method="post"> 
-					<span>'.  $time  . '</span><br/>';
+					<span>Date & Time:'.  $time  . '</span><br/>';
 					if( $row->stop_status == '1'){
 						$output .= "<span style='color:red'>Hold</span> &nbsp;";
 						$output .='<button type="button" id="green" class="btn btn-success stop_status_class">Start</button>';
 					} else {
 						$output .= "<span style='color:green'>Active</span> &nbsp;";
-						$output .='<button type="button" id="green" class="btn btn-danger stop_status_class">Stop</button>';
+						$output .='<button type="button" id="red" class="btn btn-danger stop_status_class">Stop</button>';
 					}
 					
 					
@@ -480,12 +480,12 @@ debugger;
 		  
 		  
 		 var exam_name          = $(this).closest('tr').find('#exam_name_id').text();
-		 var title              = "Stop the Below Exam";
+		 var title              = $(this).closest('td').find('.stop_status_class').text();
 			
 		   
 		   
 		 swal.fire({
-			 title: '<strong> Want to '+title+'</strong>',
+			 title: '<strong> Are you want to '+title+' the Process </strong>',
 			 html:exam_name,
 			 showCloseButton: true,
 			 confirmButtonText: 'Yes',
@@ -502,7 +502,8 @@ debugger;
 					 method: "POST",
 					 data: {
 						 exam_tier_master_id: exam_tier_master_id,
-						 iconid :iconid
+						 iconid :iconid,
+						 title :title
 					 },
 					 dataType: "json",
 				 }).done(function(data) {

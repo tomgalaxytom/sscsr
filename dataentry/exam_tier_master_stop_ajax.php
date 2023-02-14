@@ -5,6 +5,7 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 require_once ("functions.php");
 $id = $_POST['exam_tier_master_id'];
 $iconid_id = $_POST['iconid'];
+$title = $_POST['title'];
 // Update user
 
     try
@@ -31,7 +32,7 @@ $iconid_id = $_POST['iconid'];
             'response' => array(
                 'status' => 'success',
                 'code' => '1', // whatever you want
-                'message' => 'Exam Tier Master  Updated Successfully.',
+                'message' => $title . " Process Successfully",
                 'title' => "success"
             )
         );
