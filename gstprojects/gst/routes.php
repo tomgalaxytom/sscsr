@@ -35,6 +35,7 @@ return $routes = [
     'get-invoices-daterange'     => [BillApi::class, 'getInvoicesbasedDateRange'],
     'get-awk-number'             => [BillApi::class, 'getAwkNumber'],
     'sample-api'                 => [SampleApi::class, 'test'],
-    'bill-number-finalize'       => [BillApi::class, 'billNumberFinalize']
+    'bill-number-finalize'       => [BillApi::class, 'billNumberFinalize'],
+	'start-end-date-picker'      => [BillApi::class, 'configBasedStartDateEndDate'],
 
 ];
