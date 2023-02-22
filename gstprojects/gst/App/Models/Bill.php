@@ -151,4 +151,11 @@ class Bill extends BaseModel {
     public function updateBillNumberStatusFlag($billId){
           return $this->query( "UPDATE  $this->table_name  SET statusflag = ? WHERE billdetailid = ?", [ 1,$billId]);
       }
+       /**
+        * Get Based Config Start Date,End Date Picker
+        */
+    public function configBasedStartDateEndDate($distcode){
+
+        return $this->row( "SELECT * from mst_config where distcode = ?", [$distcode]);
+    }
 }

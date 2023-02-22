@@ -245,6 +245,21 @@ use App\System\Config;
           $this->response($this->HTTP_API_ERROR);
         }
     }
+       /**
+     *  Get Based Config Start Date,End Date Picker
+     */
+    public function configBasedStartDateEndDate(){
+      $billModel = new \App\Models\Bill();
+      $postData = $this->post();
+      $distcode =      $postData["distcode"] ;
+      $userData = $billModel->configBasedStartDateEndDate(  $distcode );
+      if( $userData ){
+        $this->response($this->HTTP_SUCCESS, $userData);
+      } else {
+        $this->response($this->HTTP_API_ERROR);
+      }
+  }
+  
     
   
  }
