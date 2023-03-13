@@ -153,6 +153,9 @@ $sql  = $this->select("DISTINCT em.exam_name, dbm.table_exam_year, dbm.table_typ
         ->from($table_name)
         ->where(['reg_no'=>$reg_no,'dob'=>$newDate])
         ->get_one();
+
+          //echo $this->last_query;
+          //exit;
 		$getKyasDetails = $sql;
         return $getKyasDetails;
 		

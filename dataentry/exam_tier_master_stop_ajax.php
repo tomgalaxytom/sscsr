@@ -20,6 +20,8 @@ $title = $_POST['title'];
 			  $sql = "UPDATE public.sscsr_db_table_tier_master SET  stop_status= '1',updated_on = '$updated_time' WHERE id='$id'";
 		}
 
+     
+
       
 
        

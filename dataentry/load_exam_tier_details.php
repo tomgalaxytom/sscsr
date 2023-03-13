@@ -31,9 +31,9 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 
 
 
-	/* 
-	print_r($result);
-	exit; */
+	// echo '<pre>';
+	// print_r($result);
+	// exit; 
 	
 	
 
@@ -73,13 +73,28 @@ if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ( $_SERVER['HTTP_X_REQUESTED_W
 		
 		$table_count =  "select count(*) from $row->table_name    where tier_id='$row->tier_id'";
 		$table_tot_row_count =  getRowCount($table_count);
-
-		$sql = "SELECT date1::date - INTEGER '$row->no_of_days' AS yesterday_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
-		$result =  getAll($sql);
-
-		$sql2 = "SELECT date1::date  AS exam_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
-		$result2 =  getAll($sql2);
-
+		 if($row->table_type=='tier'){
+			$sql = "SELECT date1::date - INTEGER '$row->no_of_days' AS yesterday_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
+			$result =  getAll($sql);
+			$sql2 = "SELECT date1::date  AS exam_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
+			$result2 =  getAll($sql2);
+		}else if($row->table_type=='skill'){
+			$sql = "SELECT skill_test_date::date - INTEGER '$row->no_of_days' AS yesterday_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
+			$result =  getAll($sql);
+			$sql2 = "SELECT skill_test_date::date  AS exam_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
+			$result2 =  getAll($sql2);
+		}else if($row->table_type=='dme'){
+			$sql2 = "SELECT date1::date  AS exam_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
+			$result2 =  getAll($sql2);
+		}else if($row->table_type=='pet'){
+			$sql2 = "SELECT date1::date  AS exam_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
+			$result2 =  getAll($sql2);
+		}else if($row->table_type=='dv'){
+			$sql = "SELECT dv_date::date - INTEGER '$row->no_of_days' AS yesterday_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
+			$result =  getAll($sql);
+			$sql2 = "SELECT dv_date::date  AS exam_date FROM $row->table_name where tier_id = '$row->tier_id' order by id asc limit 1";
+			$result2 =  getAll($sql2);
+		}
 		$admitcard_enable_date = $result[0]->yesterday_date;
 		$current_exam_date = $result2[0]->exam_date;
 		$str = $row->no_of_days.'=>'.$admitcard_enable_date.'=>'.$current_exam_date;

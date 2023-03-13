@@ -725,7 +725,7 @@ class PdfHelper extends Dompdf
 
 
    );
-   if ($tier_id == 11 || $tier_id == 3) {
+   if ($tier_id == 1 || $tier_id == 3) {
       $theader = $tcell = "<tr>";
       foreach($tableArray as $title => $value ){
          $theader .=  "<th>$title</th>";
