@@ -31,9 +31,12 @@ use App\System\Config;
       }
     }
     
-    $billModel    = new \App\Models\Bill();
-    $userId       = decode($postData["userid"]);
+    $acknumber  = $this->getAwkNumber( $this->post('distcode') );
+    $billModel = new \App\Models\Bill();
+    $configcode = '03';
+    $userId = decode($postData["userid"]);
     $distcode     = trim($postData["distcode"]);
+    $mobilenumber = '9100000000';
     $billnumber   = trim($postData["billnumber"]) ;
     $billdate     = trim($postData["billdate"]) ;
     $billdate     = date("Y-m-d",strtotime($billdate));
@@ -41,36 +44,22 @@ use App\System\Config;
     $billamount   = trim($postData["billamount"]);
     $uploadedon   = date("Y-m-d H:i:s") ;
     $uploadedby   = trim($userId);
-    $acknumber    = $this->getAwkNumber( $this->post('distcode'),$billnumber );
-
-    $getconfigArray   = $this->getConfigandMobileNumber( $distcode ) ;
-    $configArray  = explode("/",$getconfigArray);
-    $configcode   = $configArray[0];
-    $mobilenumber = $configArray[1];
-
     $billData = [
-    'userid'        => $userId,
-    'statecode'     => 'TN',//For TamilNadu
-    'configcode'    => $configcode,
-    'acknumber'     => $acknumber,
-    'distcode'      => $distcode,
-    'mobilenumber'  => $mobilenumber,
-    'billnumber'    => $billnumber,
-    'billdate'      => $billdate,
-    'shopname'      => $shopname,
-    'billamount'    =>  $billamount,
-    'uploadedon'    => date("Y-m-d H:i:s"),
-    'uploadedby'    => $userId,
-    'statusflag'    => "N"
+    'userid' => $userId,
+    'statecode' => 'TN',//For TamilNadu
+    'configcode' => $configcode,
+    'acknumber' => $acknumber,
+    'distcode' => $distcode,
+    'mobilenumber' => $mobilenumber,
+    'billnumber' => $billnumber,
+    'billdate' => $billdate,
+    'shopname' => $shopname,
+    'billamount' =>  $billamount,
+    'uploadedon' => date("Y-m-d H:i:s"),
+    'uploadedby' => $userId
     ];
 
-    \App\System\Log::query( 'insert', 'mybillmyright.billdetail', $billData);
-
- // \App\System\Log::info( json_encode( $userData ));
- //    \App\System\Log::query('insert', 'mybillmyright.mst_user', $userData);
-
-
-
+     Log::query( 'insert', 'mybillmyright.billdetail', $billData);
      if( $billId ){
       $billModel->update($billData, ['billdetailid' => $billId]);
      } else {
@@ -98,29 +87,7 @@ use App\System\Config;
         // make the bill flder like this uploads/bills/{$userId}/$billId/$filename.$fileextension
         $config   = new \App\System\Config();
         $uploadBasePath      = $config->get("bill_uploads");
-
-        $currentYear = date("Y"); 
-        $distcode    = $postData["distcode"] ;
-        $billDate       = $postData["billdate"] ;
-        $month = date('m', strtotime($billDate));
-
-
-       
-        /***
-         *
-         * 
-         * $uploadPath = $uploadBasePath . DIRECTORY_SEPARATOR . $userId . DIRECTORY_SEPARATOR . $billId;
-         * 
-         *  
-         * **/
-
-        $uploadPath = $uploadBasePath . DIRECTORY_SEPARATOR . $currentYear . DIRECTORY_SEPARATOR . $distcode. DIRECTORY_SEPARATOR . $month;
-        
-
-
-
-
-
+        $uploadPath = $uploadBasePath . DIRECTORY_SEPARATOR . $userId . DIRECTORY_SEPARATOR . $billId;
         if( !is_dir ($uploadPath) ){
         if( !mkdir( $uploadPath, 0777, true ) ){
           // file permission error 
@@ -134,19 +101,7 @@ use App\System\Config;
         // start uploading of files 
         $fileName = $postData['filename'];
         $fileTmpName =  md5(time()) . "_" . $fileName;
-
-
-         /***
-         *
-         * 
-         *  $fileTmpPath = $userId . "/" . $billId . "/" . $fileTmpName;
-         * 
-         *  
-         * **/
-
-         $fileTmpPath = $currentYear . "/" . $distcode . "/" . $month. "/" . $fileTmpName;
-
-
+        $fileTmpPath = $userId . "/" . $billId . "/" . $fileTmpName;
         $targetFilePath = $uploadPath . DIRECTORY_SEPARATOR . $fileTmpName;
         $fileContent = base64_decode( $postData['baseimage'] );
         CommonHelper::saveFile( $fileContent, $targetFilePath);
@@ -264,9 +219,7 @@ use App\System\Config;
     /**
      * getAwknowledgement no
      */
-    private function getAwkNumber( $distcode ,$billnumber ){
-
-        $lastthreedigitsofInvoicenumber = substr($billnumber, -3);
+    private function getAwkNumber( $distcode ){
       
         $billModel = new \App\Models\Bill();
         $getAwkDetails = $billModel->getAwkNumber($distcode);
@@ -274,51 +227,13 @@ use App\System\Config;
           Log::error('Acknowledgement Not Found');
           $this->response( $this->HTTP_INVALID );
         }
-       // return $awkNo =  $getAwkDetails['yearmonth'].$getAwkDetails['deviceid'].$getAwkDetails['distcode'].'0000001';
-
-        // Yearmonth(6)/Distcode(3)/mobilenumber(last 3 digit)/LAst 3 numbers of invoice(3 digit)+Random number(6)   -> 21 Digit
-        // ex:
-        //   202301/CHN/378/123/000001
-
-
-         return $awkNo =  $getAwkDetails['yearmonth']."/".$getAwkDetails['distcode']."/".$getAwkDetails['mobilelastthreedigit']."/".$lastthreedigitsofInvoicenumber."/".'000001';
+        return $awkNo =  $getAwkDetails['yearmonth'].$getAwkDetails['deviceid'].$getAwkDetails['distcode'].'0000001';
 
     }
 
     /**
      * getAwknowledgement no
      */
-
-  /**
-     * getConfigno and Mobile Number
-     */
-    private function getConfigandMobileNumber( $distcode ){
-        $billModel = new \App\Models\Bill();
-        $getConfandmobileDetails = $billModel->getConfigandMobileNumber($distcode);
-        if( !$getConfandmobileDetails ){
-          Log::error('MobileNimber Not Found');
-          $this->response( $this->HTTP_INVALID );
-        }
-       // return $awkNo =  $getAwkDetails['yearmonth'].$getAwkDetails['deviceid'].$getAwkDetails['distcode'].'0000001';
-
-        // Yearmonth(6)/Distcode(3)/mobilenumber(last 3 digit)/LAst 3 numbers of invoice(3 digit)+Random number(6)   -> 21 Digit
-        // ex:
-        //   202301/CHN/378/123/000001
-
-
-         return $configandMobileNo =  $getConfandmobileDetails['configcode']."/".$getConfandmobileDetails['mobilenumber'];
-
-    }
-
-    /**
-     * getAwknowledgement no
-     */
-
-
-
-
-
-
     public function billNumberFinalize(){
         $billModel = new \App\Models\Bill();
         $postData = $this->post();
@@ -330,20 +245,21 @@ use App\System\Config;
           $this->response($this->HTTP_API_ERROR);
         }
     }
-     /**
+       /**
      *  Get Based Config Start Date,End Date Picker
      */
     public function configBasedStartDateEndDate(){
-        $billModel = new \App\Models\Bill();
-        $postData = $this->post();
-        $distcode =      $postData["distcode"] ;
-        $userData = $billModel->configBasedStartDateEndDate(  $distcode );
-        if( $userData ){
-          $this->response($this->HTTP_SUCCESS, $userData);
-        } else {
-          $this->response($this->HTTP_API_ERROR);
-        }
-    }
+      $billModel = new \App\Models\Bill();
+      $postData = $this->post();
+      $distcode =      $postData["distcode"] ;
+      $userData = $billModel->configBasedStartDateEndDate(  $distcode );
+      if( $userData ){
+        $this->response($this->HTTP_SUCCESS, $userData);
+      } else {
+        $this->response($this->HTTP_API_ERROR);
+      }
+  }
+  
     
   
  }

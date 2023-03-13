@@ -30,14 +30,9 @@ class Config
   private $db_password = 'NrC@321#';
   private $db_schema = 'mybillmyright';
 
-
-  /* Old File Upload Path  */
-     
   // bill upload path 
- // private $bill_uploads = "/home/apache2438/htdocs/citizen_new/ctax/gstweb/uploads/bills";
-  //private $bill_uploads_url = "https://rtionline.tn.gov.in/ctax/gstweb/uploads/bills";
-  private $bill_uploads = "/home/apache2438/htdocs/citizen_new/ctax/gstweb/uploads";
-  private $bill_uploads_url = "https://rtionline.tn.gov.in/ctax/gstweb/uploads";
+  private $bill_uploads = "/home/apache2438/htdocs/citizen_new/ctax/gstweb/uploads/bills";
+  private $bill_uploads_url = "https://rtionline.tn.gov.in/ctax/gstweb/uploads/bills";
   // log db path
   private $db_log_path =  "/home/apache2438/htdocs/citizen_new/ctax/gst/logs";
   //log path
